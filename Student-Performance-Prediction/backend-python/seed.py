@@ -1,0 +1,411 @@
+"""
+Database seeder for the Python FastAPI backend.
+Run: python seed.py
+"""
+
+import asyncio
+from datetime import datetime, timezone
+
+import motor.motor_asyncio
+from passlib.context import CryptContext
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017/student_performance")
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+SEED_USERS = [
+    {"email": "admin@gmail.com", "password": "admin123", "role": "admin"},
+    {"email": "teacher@gmail.com", "password": "teacher123", "role": "teacher"},
+    {"email": "student@gmail.com", "password": "student123", "role": "student"},
+]
+
+SEED_STUDENTS = [
+    {
+        "id": 1,
+        "name": "Rahul Sharma",
+        "enrollmentId": "EN2024001",
+        "branch": "CSE",
+        "semester": 6,
+        "studentType": "Regular Student",
+        "subjects": ["Data Structures", "Operating Systems", "DBMS", "Computer Networks"],
+        "attendance": 87,
+        "theory": {"midsem": 32, "assignment": 18, "endSemester": 35, "total": 85, "grade": "A"},
+        "practical": {"midsem": 38, "assignment": 19, "endSemester": 34, "total": 91, "grade": "A+"},
+        "combinedTotal": 88,
+        "studyHours": 7,
+        "discipline": 8,
+        "participation": 9,
+        "backlogs": 0,
+        "consistency": 8,
+        "projects": 3,
+        "internships": "Completed 2 internships",
+        "gender": "Male",
+        "age": 21,
+        "predictionResult": "PASS",
+        "grade": "A",
+        "riskLevel": "Low",
+        "performanceScore": 88,
+        "aiInsights": ["Excellent attendance record", "Strong in programming subjects"],
+        "avatar": "RS",
+    },
+    {
+        "id": 2,
+        "name": "Priya Patel",
+        "enrollmentId": "EN2024002",
+        "branch": "IT",
+        "semester": 5,
+        "studentType": "Scholarship Student",
+        "subjects": ["Web Development", "Cloud Computing", "Cyber Security", "Data Analytics"],
+        "attendance": 94,
+        "theory": {"midsem": 36, "assignment": 19, "endSemester": 38, "total": 93, "grade": "A+"},
+        "practical": {"midsem": 39, "assignment": 20, "endSemester": 37, "total": 96, "grade": "A+"},
+        "combinedTotal": 94.5,
+        "studyHours": 8,
+        "discipline": 9,
+        "participation": 10,
+        "backlogs": 0,
+        "consistency": 9,
+        "projects": 4,
+        "internships": "Completed 3 internships",
+        "gender": "Female",
+        "age": 20,
+        "predictionResult": "PASS",
+        "grade": "A+",
+        "riskLevel": "Low",
+        "performanceScore": 94.5,
+        "aiInsights": ["Outstanding performance", "Leadership potential identified"],
+        "avatar": "PP",
+    },
+    {
+        "id": 3,
+        "name": "Amit Kumar",
+        "enrollmentId": "EN2024003",
+        "branch": "CE",
+        "semester": 4,
+        "studentType": "Backlog Student",
+        "subjects": ["Algorithms", "Software Engineering", "Microprocessors", "Data Structures"],
+        "attendance": 68,
+        "theory": {"midsem": 22, "assignment": 15, "endSemester": 20, "total": 57, "grade": "C-"},
+        "practical": {"midsem": 25, "assignment": 16, "endSemester": 23, "total": 64, "grade": "C"},
+        "combinedTotal": 60.5,
+        "studyHours": 4,
+        "discipline": 5,
+        "participation": 6,
+        "backlogs": 2,
+        "consistency": 5,
+        "projects": 1,
+        "internships": "None",
+        "gender": "Male",
+        "age": 22,
+        "predictionResult": "FAIL",
+        "grade": "C",
+        "riskLevel": "High",
+        "performanceScore": 60.5,
+        "aiInsights": ["Low attendance risk", "Needs academic support", "Irregular study pattern"],
+        "avatar": "AK",
+    },
+    {
+        "id": 4,
+        "name": "Sneha Reddy",
+        "enrollmentId": "EN2024004",
+        "branch": "Mechanical",
+        "semester": 7,
+        "studentType": "Hostel Student",
+        "subjects": ["Thermodynamics", "Fluid Mechanics", "Machine Design", "Heat Transfer"],
+        "attendance": 82,
+        "theory": {"midsem": 30, "assignment": 17, "endSemester": 32, "total": 79, "grade": "B+"},
+        "practical": {"midsem": 33, "assignment": 18, "endSemester": 34, "total": 85, "grade": "A"},
+        "combinedTotal": 82,
+        "studyHours": 6,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Female",
+        "age": 23,
+        "predictionResult": "PASS",
+        "grade": "B+",
+        "riskLevel": "Medium",
+        "performanceScore": 82,
+        "aiInsights": ["Good progress in practical subjects", "Could improve attendance"],
+        "avatar": "SR",
+    },
+    {
+        "id": 5,
+        "name": "Vikram Singh",
+        "enrollmentId": "EN2024005",
+        "branch": "CSE",
+        "semester": 3,
+        "studentType": "Day Scholar",
+        "subjects": ["Programming", "Mathematics", "Physics", "Chemistry"],
+        "attendance": 91,
+        "theory": {"midsem": 33, "assignment": 18, "endSemester": 36, "total": 87, "grade": "A"},
+        "practical": {"midsem": 35, "assignment": 19, "endSemester": 36, "total": 90, "grade": "A+"},
+        "combinedTotal": 88.5,
+        "studyHours": 7,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Male",
+        "age": 19,
+        "predictionResult": "PASS",
+        "grade": "A",
+        "riskLevel": "Low",
+        "performanceScore": 88.5,
+        "aiInsights": ["Excellent foundation in basics", "Strong analytical skills"],
+        "avatar": "VS",
+    },
+    {
+        "id": 6,
+        "name": "Kavita Jain",
+        "enrollmentId": "EN2024006",
+        "branch": "IT",
+        "semester": 6,
+        "studentType": "Regular Student",
+        "subjects": ["Mobile Computing", "Network Security", "Software Testing", "DevOps"],
+        "attendance": 89,
+        "theory": {"midsem": 31, "assignment": 17, "endSemester": 33, "total": 81, "grade": "A"},
+        "practical": {"midsem": 36, "assignment": 19, "endSemester": 35, "total": 90, "grade": "A+"},
+        "combinedTotal": 85.5,
+        "studyHours": 6,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Female",
+        "age": 21,
+        "predictionResult": "PASS",
+        "grade": "A",
+        "riskLevel": "Low",
+        "performanceScore": 85.5,
+        "aiInsights": ["Good technical skills", "Active in project work"],
+        "avatar": "KJ",
+    },
+    {
+        "id": 7,
+        "name": "Rohit Verma",
+        "enrollmentId": "EN2024007",
+        "branch": "CE",
+        "semester": 5,
+        "studentType": "Regular Student",
+        "subjects": ["Database Systems", "Web Technologies", "System Programming", "Computer Graphics"],
+        "attendance": 73,
+        "theory": {"midsem": 26, "assignment": 16, "endSemester": 28, "total": 70, "grade": "B"},
+        "practical": {"midsem": 29, "assignment": 17, "endSemester": 30, "total": 76, "grade": "B+"},
+        "combinedTotal": 73,
+        "studyHours": 5,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Male",
+        "age": 20,
+        "predictionResult": "PASS",
+        "grade": "B",
+        "riskLevel": "Medium",
+        "performanceScore": 73,
+        "aiInsights": ["Average performance", "Needs to focus on theory subjects"],
+        "avatar": "RV",
+    },
+    {
+        "id": 8,
+        "name": "Anjali Nair",
+        "enrollmentId": "EN2024008",
+        "branch": "AI",
+        "semester": 4,
+        "studentType": "Scholarship Student",
+        "subjects": ["Machine Learning", "Deep Learning", "Natural Language Processing", "Computer Vision"],
+        "attendance": 96,
+        "theory": {"midsem": 38, "assignment": 20, "endSemester": 37, "total": 95, "grade": "A+"},
+        "practical": {"midsem": 39, "assignment": 20, "endSemester": 39, "total": 98, "grade": "A+"},
+        "combinedTotal": 96.5,
+        "studyHours": 9,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Female",
+        "age": 20,
+        "predictionResult": "PASS",
+        "grade": "A+",
+        "riskLevel": "Low",
+        "performanceScore": 96.5,
+        "aiInsights": ["Exceptional in AI subjects", "Research potential", "Top performer"],
+        "avatar": "AN",
+    },
+    {
+        "id": 9,
+        "name": "Suresh Babu",
+        "enrollmentId": "EN2024009",
+        "branch": "Mechanical",
+        "semester": 6,
+        "studentType": "Regular Student",
+        "subjects": ["CAD/CAM", "Automotive Engineering", "Manufacturing Processes", "Engineering Mechanics"],
+        "attendance": 78,
+        "theory": {"midsem": 28, "assignment": 16, "endSemester": 27, "total": 71, "grade": "B"},
+        "practical": {"midsem": 32, "assignment": 18, "endSemester": 33, "total": 83, "grade": "A"},
+        "combinedTotal": 77,
+        "studyHours": 5,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Male",
+        "age": 22,
+        "predictionResult": "PASS",
+        "grade": "B+",
+        "riskLevel": "Medium",
+        "performanceScore": 77,
+        "aiInsights": ["Good in practical subjects", "Could improve theoretical understanding"],
+        "avatar": "SB",
+    },
+    {
+        "id": 10,
+        "name": "Meera Joshi",
+        "enrollmentId": "EN2024010",
+        "branch": "CSE",
+        "semester": 7,
+        "studentType": "Hostel Student",
+        "subjects": ["Artificial Intelligence", "Big Data Analytics", "Cloud Computing", "Blockchain"],
+        "attendance": 85,
+        "theory": {"midsem": 31, "assignment": 17, "endSemester": 32, "total": 80, "grade": "A"},
+        "practical": {"midsem": 34, "assignment": 19, "endSemester": 33, "total": 86, "grade": "A"},
+        "combinedTotal": 83,
+        "studyHours": 6,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Female",
+        "age": 22,
+        "predictionResult": "PASS",
+        "grade": "A",
+        "riskLevel": "Low",
+        "performanceScore": 83,
+        "aiInsights": ["Strong in advanced topics", "Good project work"],
+        "avatar": "MJ",
+    },
+    {
+        "id": 11,
+        "name": "Arun Prakash",
+        "enrollmentId": "EN2024011",
+        "branch": "IT",
+        "semester": 3,
+        "studentType": "Regular Student",
+        "subjects": ["Internet Technologies", "Database Management", "Software Engineering", "System Analysis"],
+        "attendance": 88,
+        "theory": {"midsem": 32, "assignment": 18, "endSemester": 35, "total": 85, "grade": "A"},
+        "practical": {"midsem": 35, "assignment": 19, "endSemester": 36, "total": 90, "grade": "A+"},
+        "combinedTotal": 87.5,
+        "studyHours": 7,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Male",
+        "age": 19,
+        "predictionResult": "PASS",
+        "grade": "A",
+        "riskLevel": "Low",
+        "performanceScore": 87.5,
+        "aiInsights": ["Consistent performer", "Good understanding of concepts"],
+        "avatar": "AP",
+    },
+    {
+        "id": 12,
+        "name": "Divya Sharma",
+        "enrollmentId": "EN2024012",
+        "branch": "CE",
+        "semester": 8,
+        "studentType": "Regular Student",
+        "subjects": ["Advanced Algorithms", "Distributed Systems", "Cyber Security", "Mobile Computing"],
+        "attendance": 92,
+        "theory": {"midsem": 34, "assignment": 19, "endSemester": 36, "total": 89, "grade": "A+"},
+        "practical": {"midsem": 36, "assignment": 19, "endSemester": 37, "total": 92, "grade": "A+"},
+        "combinedTotal": 90.5,
+        "studyHours": 8,
+        "discipline": 0,
+        "participation": 0,
+        "backlogs": 0,
+        "consistency": 0,
+        "projects": 0,
+        "internships": "None",
+        "gender": "Female",
+        "age": 23,
+        "predictionResult": "PASS",
+        "grade": "A",
+        "riskLevel": "Low",
+        "performanceScore": 90.5,
+        "aiInsights": ["Excellent final year student", "Ready for placements"],
+        "avatar": "DS",
+    },
+]
+
+
+async def seed():
+    """Seed the database with demo users and students."""
+    client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_URI)
+    db = client.get_default_database()
+
+    user_collection = db.get_collection("users")
+    student_collection = db.get_collection("students")
+
+    try:
+        # Clear existing data
+        await user_collection.delete_many({})
+        await student_collection.delete_many({})
+        print("🗑️  Cleared existing data")
+
+        # Seed users
+        for user_data in SEED_USERS:
+            hashed_pw = pwd_context.hash(user_data["password"])
+            await user_collection.insert_one({
+                "email": user_data["email"],
+                "password": hashed_pw,
+                "role": user_data["role"],
+            })
+        print(f"✅ Seeded {len(SEED_USERS)} users")
+
+        # Seed students
+        now = datetime.now(timezone.utc)
+        for student in SEED_STUDENTS:
+            student["createdAt"] = now
+            student["updatedAt"] = now
+        await student_collection.insert_many(SEED_STUDENTS)
+        print(f"✅ Seeded {len(SEED_STUDENTS)} students")
+
+        print("\n🎉 Database seeded successfully!")
+        print("\n📋 Demo Credentials:")
+        print("   Admin:   admin@gmail.com / admin123")
+        print("   Teacher: teacher@gmail.com / teacher123")
+        print("   Student: student@gmail.com / student123")
+
+    except Exception as e:
+        print(f"❌ Seed error: {e}")
+    finally:
+        client.close()
+
+
+if __name__ == "__main__":
+    asyncio.run(seed())

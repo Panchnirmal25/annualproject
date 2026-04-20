@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Performance Prediction — Project Flowchart</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f0f4ff;
+      color: #1e293b;
+      padding: 32px 24px;
+    }
+
+    /* ── Cover ── */
+    .cover {
+      background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 56px 48px;
+      margin-bottom: 40px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(99,102,241,0.35);
+    }
+    .cover h1 { font-size: 2.6rem; font-weight: 800; margin-bottom: 12px; }
+    .cover p  { font-size: 1.1rem; opacity: 0.9; margin-bottom: 6px; }
+    .cover .badge {
+      display: inline-block;
+      margin: 6px 4px;
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+      border-radius: 999px;
+      padding: 4px 16px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* ── Print button ── */
+    .print-btn {
+      display: block;
+      margin: 0 auto 40px;
+      padding: 14px 40px;
+      font-size: 1rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(99,102,241,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .print-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(99,102,241,0.5);
+    }
+
+    /* ── Section cards ── */
+    .section {
+      background: white;
+      border-radius: 16px;
+      padding: 36px;
+      margin-bottom: 32px;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      page-break-inside: avoid;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 28px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    .section-number {
+      width: 40px; height: 40px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .section h2 { font-size: 1.4rem; font-weight: 700; color: #1e293b; }
+
+    /* ── Mermaid diagrams ── */
+    .mermaid {
+      overflow-x: auto;
+      text-align: center;
+      padding: 8px 0;
+    }
+
+    /* ── Tech stack table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    th {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white;
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+    }
+    th:first-child { border-radius: 8px 0 0 0; }
+    th:last-child  { border-radius: 0 8px 0 0; }
+    td { padding: 11px 16px; border-bottom: 1px solid #f1f5f9; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    tr:hover td { background: #eff6ff; }
+    .port-badge {
+      background: #ede9fe;
+      color: #6d28d9;
+      border-radius: 6px;
+      padding: 2px 10px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    /* ── Print styles ── */
+    @media print {
+      body { background: white; padding: 0; }
+      .print-btn { display: none !important; }
+      .cover { box-shadow: none; }
+      .section { box-shadow: none; border: 1px solid #e2e8f0; page-break-inside: avoid; }
+      @page { margin: 18mm 15mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Cover -->
+  <div class="cover">
+    <h1>🎓 Student Performance Prediction</h1>
+    <p>Complete Project Architecture &amp; Flowchart Documentation</p>
+    <br/>
+    <span class="badge">⚛️ React + Vite</span>
+    <span class="badge">🟩 Node.js + Express</span>
+    <span class="badge">🐍 FastAPI + Python</span>
+    <span class="badge">🍃 MongoDB</span>
+    <span class="badge">🤖 ML Prediction</span>
+    <span class="badge">🔐 JWT Auth + RBAC</span>
+  </div>
+
+  <!-- Print Button -->
+  <button class="print-btn" onclick="window.print()">🖨️ Save as PDF (Ctrl + P)</button>
+
+  <!-- 1. System Architecture -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2>Overall System Architecture</h2>
+    </div>
+    <div class="mermaid">
+graph TB
+    User(["👤 User Browser"])
+    subgraph FE["⚛️ React Frontend · Vite · Port 3000"]
+        Login["Login / Register"]
+        Auth["AuthContext\nJWT + Role State"]
+        Router["React Router\nProtected Routes"]
+        Pages["Pages / Views"]
+        API["api.js Axios Service"]
+    end
+    subgraph BN["🟩 Node.js Backend · Express · Port 5000"]
+        AuthRoute["/api/auth"]
+        StudentRoute["/api/students"]
+        MW["JWT Middleware protect()"]
+        Models["Mongoose Models\nUser | Student"]
+    end
+    subgraph BP["🐍 Python Backend · FastAPI · Port 8000"]
+        PredRoute["/api/predict"]
+        MLModel["ML Prediction Model"]
+    end
+    DB[("🍃 MongoDB")]
+    User -->|HTTP| Login
+    Login --> Auth --> Router --> Pages --> API
+    API -->|REST + JWT| AuthRoute
+    API -->|REST + JWT| StudentRoute
+    AuthRoute --> Models
+    StudentRoute --> MW --> Models
+    Models --> DB
+    Models -->|Triggers Prediction| PredRoute
+    PredRoute --> MLModel
+    MLModel -->|Result| Models
+    </div>
+  </div>
+
+  <!-- 2. Authentication Flow -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2>Authentication Flow</h2>
+    </div>
+    <div class="mermaid">
+flowchart TD
+    A([Start]) --> B["User visits '/'"]
+    B --> C{"Already logged in?\ntoken in localStorage"}
+    C -->|Yes| D["Go to /dashboard"]
+    C -->|No| E["Show Login Page"]
+    E --> F{"Login or Signup?"}
+    F -->|Signup| G["Fill email + password + role"]
+    G --> H["POST /api/auth/register"]
+    H --> I{"Success?"}
+    I -->|No| J["Show error"] --> E
+    I -->|Yes| K["Show Account Created popup"] --> E
+    F -->|Login| L["Enter email + password"]
+    L --> M["POST /api/auth/login"]
+    M --> N{"Valid credentials?"}
+    N -->|No| O["Show error"] --> E
+    N -->|Yes| P["Receive JWT token + user data"]
+    P --> Q["AuthContext.login\nSave to state + localStorage"]
+    Q --> R["setThemeByRole"] --> D
+    D --> S["PrivateRoute checks token"]
+    S --> T{"Token exists?"}
+    T -->|No| E
+    T -->|Yes| U["ProtectedRoute checks role"]
+    U --> V{"Role allowed?"}
+    V -->|No| W["/unauthorized"]
+    V -->|Yes| X["✅ Render Page"]
+    </div>
+  </div>
+
+  <!-- 3. RBAC -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2>Role-Based Access Control (RBAC)</h2>
+    </div>
+    <div class="mermaid">
+flowchart LR
+    subgraph Roles
+        A["👑 Admin"]
+        T["👨‍🏫 Teacher"]
+        S["👨‍🎓 Student"]
+    end
+    subgraph Pages
+        DB["📊 Dashboard"]
+        STU["👥 Students"]
+        BR["🌿 Branches"]
+        SUB["📚 Subjects"]
+        AN["📈 Analytics"]
+        PR["🤖 Prediction"]
+        PRO["👤 My Profile"]
+        EP["✏️ Edit Profile"]
+        SET["⚙️ Settings"]
+        UNA["🚫 Unauthorized"]
+    end
+    A --> DB & STU & BR & SUB & AN & PR & PRO & EP & SET
+    T --> DB & STU & BR & SUB & AN & PR & PRO & EP & SET
+    S --> DB & STU & PR & PRO & EP & SET
+    S -. "blocked" .-> BR & SUB & AN & UNA
+    </div>
+  </div>
+
+  <!-- 4. Student CRUD -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2>Student Data CRUD Flow</h2>
+    </div>
+    <div class="mermaid">
+flowchart TD
+    A([User on Students Page]) --> B{"Action?"}
+    B -->|View List| C["GET /api/students"]
+    C --> D["Return student list"] --> G["Render table"]
+    B -->|Add Student| H["Fill Add Student Form"]
+    H --> I["POST /api/students"]
+    I --> J["Save to MongoDB"]
+    J --> L["Trigger AI Prediction\nPOST :8000/api/predict"]
+    L --> N["ML Model runs"]
+    N --> O["Return predicted grade/risk"]
+    O --> P["Store prediction in student doc"]
+    P --> Q["✅ Added + Predicted"]
+    B -->|Edit Student| R["Open Edit Form"]
+    R --> S["PUT /api/students/:id"]
+    S --> U["Update MongoDB"] --> L
+    B -->|Delete Student| V["Confirm delete"]
+    V --> W["DELETE /api/students/:id"]
+    W --> Y["Remove from MongoDB"] --> Z["✅ Deleted"]
+    </div>
+  </div>
+
+  <!-- 5. AI Prediction -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2>AI Prediction Flow</h2>
+    </div>
+    <div class="mermaid">
+flowchart TD
+    A([Student Created / Updated]) --> B["Node.js calls\nPOST localhost:8000/api/predict"]
+    B --> C["FastAPI receives request"]
+    C --> D["Validate payload\npredict_schemas.py"]
+    D --> E{"Validation passed?"}
+    E -->|No| F["Return 422 Error"]
+    E -->|Yes| G["Extract features\nmarks, attendance, branch, semester"]
+    G --> H["ML Model processes features"]
+    H --> I["Calculate performance score"]
+    I --> J{"Risk Level?"}
+    J -->|"Score less than 40"| K["🔴 High Risk"]
+    J -->|"Score 40 to 70"| L["🟡 Average"]
+    J -->|"Score above 70"| M["🟢 Good Performance"]
+    K --> N["Return result + recommendations"]
+    L --> N
+    M --> N
+    N --> O["Node.js stores result in Student doc"]
+    O --> P["Frontend shows Prediction Badge + Chart"]
+    </div>
+  </div>
+
+  <!-- 6. Profile Edit Flow -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2>Profile Edit Flow</h2>
+    </div>
+    <div class="mermaid">
+flowchart TD
+    A([User clicks Edit Profile]) --> B["Load /edit-profile"]
+    B --> C["Read from AuthContext in-memory state"]
+    C --> D{"AuthContext has user?"}
+    D -->|No| E["Fall back to localStorage"]
+    E --> F{"localStorage has user?"}
+    F -->|No| G["Show Please login again"]
+    F -->|Yes| H["Populate form fields"]
+    D -->|Yes| H
+    H --> I["User edits: name / phone\naddress / branch / bio"]
+    I --> J["Click Save Changes"]
+    J --> K["handleSave()"]
+    K --> L["AuthContext.updateUser(fields)"]
+    L --> M["Update React state setUser"]
+    L --> N["Update localStorage"]
+    M --> O["✅ Profile updated everywhere\nNavbar, Profile page, Header"]
+    N --> O
+    </div>
+  </div>
+
+  <!-- 7. Component Tree -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <h2>Frontend Component Tree</h2>
+    </div>
+    <div class="mermaid">
+graph TD
+    Main["main.jsx"] --> App["App.jsx BrowserRouter"]
+    App --> TP["ThemeProvider"] --> AP["AuthProvider"]
+    AP --> PUB["Public Routes"]
+    AP --> PRIV["Protected Routes\nPrivateRoute + ProtectedRoute"]
+    PUB --> LG["Login.jsx"]
+    PUB --> RG["Register.jsx"]
+    PUB --> UN["Unauthorized.jsx"]
+    PRIV --> DB["Dashboard.jsx"]
+    PRIV --> ST["Students.jsx"]
+    PRIV --> BR["Branches.jsx"]
+    PRIV --> SB["Subjects.jsx"]
+    PRIV --> AN["Analytics.jsx"]
+    PRIV --> PR["Prediction.jsx"]
+    PRIV --> PRO["StudentProfile.jsx"]
+    PRIV --> EP["EditProfile.jsx"]
+    PRIV --> SE["Settings.jsx"]
+    DB --> SB2["Sidebar.jsx"]
+    DB --> NB["Navbar.jsx"]
+    DB --> AI["AISidebar.jsx"]
+    </div>
+  </div>
+
+  <!-- 8. Data Models -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">8</div>
+      <h2>Data Models (ER Diagram)</h2>
+    </div>
+    <div class="mermaid">
+erDiagram
+    USER {
+        ObjectId _id
+        string email
+        string password
+        string role
+        date createdAt
+        date updatedAt
+    }
+    STUDENT {
+        ObjectId _id
+        string name
+        string email
+        string branch
+        int semester
+        float marks
+        float attendance
+        string status
+        string prediction
+        float riskScore
+        date createdAt
+    }
+    PREDICTION_RESULT {
+        string studentId
+        float score
+        string riskLevel
+        string recommendations
+        date generatedAt
+    }
+    USER ||--o{ STUDENT : "manages"
+    STUDENT ||--|| PREDICTION_RESULT : "has"
+    </div>
+  </div>
+
+  <!-- 9. Tech Stack -->
+  <div class="section">
+    <div class="section-header">
+      <div class="section-number">9</div>
+      <h2>Tech Stack Summary</h2>
+    </div>
+    <table>
+      <thead>
+        <tr><th>Layer</th><th>Technology</th><th>Port</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>⚛️ Frontend</td><td>React + Vite + React Router</td><td><span class="port-badge">3000</span></td></tr>
+        <tr><td>🎨 Styling</td><td>TailwindCSS + React Icons</td><td><span class="port-badge">—</span></td></tr>
+        <tr><td>🔄 State</td><td>AuthContext + StudentContext (React Context API)</td><td><span class="port-badge">—</span></td></tr>
+        <tr><td>📡 HTTP Client</td><td>Axios (services/api.js) with JWT interceptor</td><td><span class="port-badge">—</span></td></tr>
+        <tr><td>🟩 Node Backend</td><td>Express.js + JWT + bcryptjs</td><td><span class="port-badge">5000</span></td></tr>
+        <tr><td>🐍 Python Backend</td><td>FastAPI + Uvicorn</td><td><span class="port-badge">8000</span></td></tr>
+        <tr><td>🍃 Database</td><td>MongoDB + Mongoose ODM</td><td><span class="port-badge">27017</span></td></tr>
+        <tr><td>🔐 Auth</td><td>JWT Bearer Token (7-day expiry)</td><td><span class="port-badge">—</span></td></tr>
+        <tr><td>🤖 AI / ML</td><td>Python ML Model served via FastAPI</td><td><span class="port-badge">8000</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#6366f1',
+        primaryTextColor: '#1e293b',
+        primaryBorderColor: '#818cf8',
+        lineColor: '#94a3b8',
+        secondaryColor: '#ede9fe',
+        tertiaryColor: '#f0fdf4',
+        fontFamily: 'Inter, sans-serif',
+        fontSize: '14px'
+      },
+      flowchart: { curve: 'basis', padding: 20 },
+      er: { diagramPadding: 20 }
+    });
+  </script>
+</body>
+</html>

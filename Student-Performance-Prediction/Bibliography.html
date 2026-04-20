@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bibliography — Student Performance Prediction System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600;700&display=swap');
+
+        :root {
+            --primary: #1a1a2e;
+            --accent: #e94560;
+            --bg: #fafafa;
+            --card-bg: #ffffff;
+            --text: #2c2c2c;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --section-bg: #f1f5f9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Merriweather', Georgia, serif;
+            color: var(--text);
+            background: var(--bg);
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+            padding: 50px 40px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 45px;
+            padding-bottom: 30px;
+            border-bottom: 3px double var(--primary);
+        }
+
+        .header h1 {
+            font-family: 'Inter', sans-serif;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+        }
+
+        .header .subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .header .meta {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Download button */
+        .download-btn {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 10px 28px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), #16213e);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 2px 8px rgba(26, 26, 46, 0.2);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(26, 26, 46, 0.35);
+        }
+
+        /* Section headings */
+        .section-title {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 38px;
+            margin-bottom: 18px;
+            padding: 10px 18px;
+            background: var(--section-bg);
+            border-left: 4px solid var(--accent);
+            border-radius: 0 4px 4px 0;
+        }
+
+        /* Bibliography list */
+        .bib-list {
+            list-style: none;
+            counter-reset: bib-counter;
+            padding: 0;
+        }
+
+        .bib-item {
+            counter-increment: bib-counter;
+            position: relative;
+            padding: 12px 16px 12px 50px;
+            margin-bottom: 6px;
+            border-bottom: 1px solid var(--border);
+            transition: background 0.2s;
+        }
+
+        .bib-item:hover {
+            background: #f9fafb;
+        }
+
+        .bib-item::before {
+            content: "[" counter(bib-counter) "]";
+            position: absolute;
+            left: 8px;
+            top: 12px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--accent);
+            min-width: 32px;
+        }
+
+        .bib-item strong {
+            color: var(--primary);
+        }
+
+        .bib-item .version {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--primary);
+            color: #fff;
+            padding: 1px 7px;
+            border-radius: 3px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+
+        .bib-item em {
+            color: var(--text);
+        }
+
+        .bib-item a {
+            color: #2563eb;
+            text-decoration: none;
+            word-break: break-all;
+            font-size: 12.5px;
+        }
+
+        .bib-item a:hover {
+            text-decoration: underline;
+        }
+
+        /* Separator */
+        hr.section-sep {
+            border: none;
+            border-top: 1px dashed var(--border);
+            margin: 10px 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 3px double var(--primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        /* Print styles */
+        @media print {
+            body { background: #fff; font-size: 12px; }
+            .container { padding: 20px 30px; }
+            .download-btn { display: none !important; }
+            .header { margin-bottom: 30px; padding-bottom: 20px; }
+            .header h1 { font-size: 24px; }
+            .section-title { margin-top: 28px; margin-bottom: 14px; font-size: 16px; }
+            .bib-item { padding: 8px 12px 8px 45px; break-inside: avoid; }
+            .bib-item:hover { background: none; }
+            .bib-item a { color: #2563eb; }
+            .footer { margin-top: 30px; }
+            @page { margin: 2cm 1.5cm; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Bibliography</h1>
+            <div class="subtitle">Student Performance Prediction System</div>
+            <div class="meta">Full-Stack Web Application — React · Node.js · Python · MongoDB</div>
+            <button class="download-btn" onclick="window.print()">⬇ Download as PDF</button>
+        </div>
+
+        <!-- Section 1: Frontend Technologies -->
+        <div class="section-title">I. Frontend Technologies</div>
+        <ol class="bib-list">
+            <li class="bib-item">
+                <strong>React</strong> <span class="version">v19.2.4</span> — Meta Platforms, Inc. (2026). <em>React: A JavaScript library for building user interfaces.</em> Available at: <a href="https://react.dev">https://react.dev</a>
+            </li>
+            <li class="bib-item">
+                <strong>React DOM</strong> <span class="version">v19.2.4</span> — Meta Platforms, Inc. (2026). <em>React DOM: React package for working with the DOM.</em> Available at: <a href="https://react.dev/reference/react-dom">https://react.dev/reference/react-dom</a>
+            </li>
+            <li class="bib-item">
+                <strong>React Router DOM</strong> <span class="version">v7.13.1</span> — Remix Software, Inc. (2026). <em>React Router: Declarative routing for React applications.</em> Available at: <a href="https://reactrouter.com">https://reactrouter.com</a>
+            </li>
+            <li class="bib-item">
+                <strong>Vite</strong> <span class="version">v8.0.0</span> — Evan You (2026). <em>Vite: Next Generation Frontend Tooling.</em> Available at: <a href="https://vitejs.dev">https://vitejs.dev</a>
+            </li>
+            <li class="bib-item">
+                <strong>Axios</strong> <span class="version">v1.15.0</span> — Matt Zabriskie (2026). <em>Axios: Promise based HTTP client for the browser and Node.js.</em> Available at: <a href="https://axios-http.com">https://axios-http.com</a>
+            </li>
+            <li class="bib-item">
+                <strong>Chart.js</strong> <span class="version">v4.5.1</span> — Chart.js Contributors (2026). <em>Chart.js: Simple yet flexible JavaScript charting library.</em> Available at: <a href="https://www.chartjs.org">https://www.chartjs.org</a>
+            </li>
+            <li class="bib-item">
+                <strong>React-Chartjs-2</strong> <span class="version">v5.3.1</span> — Jeroen Bleijenberg (2026). <em>React-Chartjs-2: React wrapper for Chart.js.</em> Available at: <a href="https://react-chartjs-2.js.org">https://react-chartjs-2.js.org</a>
+            </li>
+            <li class="bib-item">
+                <strong>Framer Motion</strong> <span class="version">v12.36.0</span> — Framer B.V. (2026). <em>Framer Motion: A production-ready motion library for React.</em> Available at: <a href="https://www.framer.com/motion">https://www.framer.com/motion</a>
+            </li>
+            <li class="bib-item">
+                <strong>React Icons</strong> <span class="version">v5.6.0</span> — React Icons Contributors (2026). <em>React Icons: Popular icon packs as React components.</em> Available at: <a href="https://react-icons.github.io/react-icons">https://react-icons.github.io/react-icons</a>
+            </li>
+            <li class="bib-item">
+                <strong>Tailwind CSS</strong> <span class="version">v4.2.1</span> — Tailwind Labs, Inc. (2026). <em>Tailwind CSS: A utility-first CSS framework.</em> Available at: <a href="https://tailwindcss.com">https://tailwindcss.com</a>
+            </li>
+            <li class="bib-item">
+                <strong>PostCSS</strong> <span class="version">v8.5.8</span> — Andrey Sitnik (2026). <em>PostCSS: A tool for transforming CSS with JavaScript plugins.</em> Available at: <a href="https://postcss.org">https://postcss.org</a>
+            </li>
+            <li class="bib-item">
+                <strong>Autoprefixer</strong> <span class="version">v10.4.27</span> — Andrey Sitnik (2026). <em>Autoprefixer: PostCSS plugin to parse CSS and add vendor prefixes.</em> Available at: <a href="https://github.com/postcss/autoprefixer">https://github.com/postcss/autoprefixer</a>
+            </li>
+            <li class="bib-item">
+                <strong>ESLint</strong> <span class="version">v9.39.4</span> — OpenJS Foundation (2026). <em>ESLint: Find and fix problems in your JavaScript code.</em> Available at: <a href="https://eslint.org">https://eslint.org</a>
+            </li>
+        </ol>
+
+        <!-- Section 2: Backend Node.js -->
+        <div class="section-title">II. Backend — Node.js Technologies</div>
+        <ol class="bib-list" style="counter-reset: bib-counter 13;">
+            <li class="bib-item">
+                <strong>Node.js</strong> — OpenJS Foundation (2026). <em>Node.js: A JavaScript runtime built on Chrome's V8 engine.</em> Available at: <a href="https://nodejs.org">https://nodejs.org</a>
+            </li>
+            <li class="bib-item">
+                <strong>Express.js</strong> <span class="version">v4.21.0</span> — OpenJS Foundation (2026). <em>Express: Fast, unopinionated, minimalist web framework for Node.js.</em> Available at: <a href="https://expressjs.com">https://expressjs.com</a>
+            </li>
+            <li class="bib-item">
+                <strong>Mongoose</strong> <span class="version">v8.8.0</span> — Automattic Inc. (2026). <em>Mongoose: Elegant MongoDB object modeling for Node.js.</em> Available at: <a href="https://mongoosejs.com">https://mongoosejs.com</a>
+            </li>
+            <li class="bib-item">
+                <strong>jsonwebtoken</strong> <span class="version">v9.0.2</span> — Auth0 Inc. (2026). <em>jsonwebtoken: JSON Web Token implementation for Node.js.</em> Available at: <a href="https://github.com/auth0/node-jsonwebtoken">https://github.com/auth0/node-jsonwebtoken</a>
+            </li>
+            <li class="bib-item">
+                <strong>bcrypt.js</strong> <span class="version">v2.4.3</span> — Daniel Wirtz (2026). <em>bcryptjs: Optimized bcrypt in plain JavaScript.</em> Available at: <a href="https://github.com/dcodeIO/bcrypt.js">https://github.com/dcodeIO/bcrypt.js</a>
+            </li>
+            <li class="bib-item">
+                <strong>CORS</strong> <span class="version">v2.8.5</span> — Troy Goode (2026). <em>cors: Node.js CORS middleware.</em> Available at: <a href="https://github.com/expressjs/cors">https://github.com/expressjs/cors</a>
+            </li>
+            <li class="bib-item">
+                <strong>dotenv</strong> <span class="version">v16.4.5</span> — Scott Motte (2026). <em>dotenv: Loads environment variables from .env file.</em> Available at: <a href="https://github.com/motdotla/dotenv">https://github.com/motdotla/dotenv</a>
+            </li>
+            <li class="bib-item">
+                <strong>Express Validator</strong> <span class="version">v7.2.0</span> — Express Validator Contributors (2026). <em>express-validator: Express.js middleware for input validation.</em> Available at: <a href="https://express-validator.github.io">https://express-validator.github.io</a>
+            </li>
+            <li class="bib-item">
+                <strong>Morgan</strong> <span class="version">v1.10.0</span> — Express.js Contributors (2026). <em>Morgan: HTTP request logger middleware for Node.js.</em> Available at: <a href="https://github.com/expressjs/morgan">https://github.com/expressjs/morgan</a>
+            </li>
+            <li class="bib-item">
+                <strong>Nodemon</strong> <span class="version">v3.1.7</span> — Remy Sharp (2026). <em>Nodemon: Automatically restart Node.js applications on code changes.</em> Available at: <a href="https://nodemon.io">https://nodemon.io</a>
+            </li>
+        </ol>
+
+        <!-- Section 3: Backend Python -->
+        <div class="section-title">III. Backend — Python Technologies</div>
+        <ol class="bib-list" style="counter-reset: bib-counter 23;">
+            <li class="bib-item">
+                <strong>Python</strong> — Python Software Foundation (2026). <em>Python Programming Language.</em> Available at: <a href="https://www.python.org">https://www.python.org</a>
+            </li>
+            <li class="bib-item">
+                <strong>FastAPI</strong> <span class="version">v0.115.0</span> — Sebastián Ramírez (2026). <em>FastAPI: Modern, fast web framework for building APIs with Python.</em> Available at: <a href="https://fastapi.tiangolo.com">https://fastapi.tiangolo.com</a>
+            </li>
+            <li class="bib-item">
+                <strong>Uvicorn</strong> <span class="version">v0.31.0</span> — Encode (2026). <em>Uvicorn: An ASGI web server for Python.</em> Available at: <a href="https://www.uvicorn.org">https://www.uvicorn.org</a>
+            </li>
+            <li class="bib-item">
+                <strong>Motor</strong> <span class="version">v3.6.0</span> — MongoDB, Inc. (2026). <em>Motor: Async Python driver for MongoDB.</em> Available at: <a href="https://motor.readthedocs.io">https://motor.readthedocs.io</a>
+            </li>
+            <li class="bib-item">
+                <strong>PyMongo</strong> <span class="version">v4.9.0</span> — MongoDB, Inc. (2026). <em>PyMongo: Python driver for MongoDB.</em> Available at: <a href="https://pymongo.readthedocs.io">https://pymongo.readthedocs.io</a>
+            </li>
+            <li class="bib-item">
+                <strong>python-jose</strong> <span class="version">v3.3.0</span> — Michael Davis (2026). <em>python-jose: A JOSE (JSON Object Signing and Encryption) implementation in Python.</em> Available at: <a href="https://github.com/mpdavis/python-jose">https://github.com/mpdavis/python-jose</a>
+            </li>
+            <li class="bib-item">
+                <strong>Passlib</strong> <span class="version">v1.7.4</span> — Eli Collins (2026). <em>Passlib: Password hashing framework for Python.</em> Available at: <a href="https://passlib.readthedocs.io">https://passlib.readthedocs.io</a>
+            </li>
+            <li class="bib-item">
+                <strong>bcrypt</strong> <span class="version">v4.2.0</span> — Python Cryptographic Authority (2026). <em>bcrypt: Modern password hashing for Python.</em> Available at: <a href="https://github.com/pyca/bcrypt">https://github.com/pyca/bcrypt</a>
+            </li>
+            <li class="bib-item">
+                <strong>python-dotenv</strong> <span class="version">v1.0.1</span> — Saurabh Kumar (2026). <em>python-dotenv: Read key-value pairs from .env files.</em> Available at: <a href="https://github.com/theskumar/python-dotenv">https://github.com/theskumar/python-dotenv</a>
+            </li>
+            <li class="bib-item">
+                <strong>Pydantic</strong> <span class="version">v2.9.0</span> — Samuel Colvin (2026). <em>Pydantic: Data validation using Python type annotations.</em> Available at: <a href="https://docs.pydantic.dev">https://docs.pydantic.dev</a>
+            </li>
+            <li class="bib-item">
+                <strong>Pydantic Settings</strong> <span class="version">v2.5.0</span> — Samuel Colvin (2026). <em>Pydantic Settings: Settings management using Pydantic.</em> Available at: <a href="https://docs.pydantic.dev/latest/concepts/pydantic-settings">https://docs.pydantic.dev/latest/concepts/pydantic-settings</a>
+            </li>
+            <li class="bib-item">
+                <strong>python-multipart</strong> <span class="version">v0.0.12</span> — Andrew Dunham (2026). <em>python-multipart: A streaming multipart parser for Python.</em> Available at: <a href="https://github.com/Kludex/python-multipart">https://github.com/Kludex/python-multipart</a>
+            </li>
+        </ol>
+
+        <!-- Section 4: Database -->
+        <div class="section-title">IV. Database</div>
+        <ol class="bib-list" style="counter-reset: bib-counter 35;">
+            <li class="bib-item">
+                <strong>MongoDB</strong> — MongoDB, Inc. (2026). <em>MongoDB: A document-oriented NoSQL database.</em> Available at: <a href="https://www.mongodb.com">https://www.mongodb.com</a>
+            </li>
+        </ol>
+
+        <!-- Section 5: General / Conceptual -->
+        <div class="section-title">V. General &amp; Conceptual References</div>
+        <ol class="bib-list" style="counter-reset: bib-counter 36;">
+            <li class="bib-item">
+                Fielding, R.T. (2000). <em>Architectural Styles and the Design of Network-based Software Architectures.</em> Doctoral dissertation, University of California, Irvine. Available at: <a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm">https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm</a>
+            </li>
+            <li class="bib-item">
+                Jones, M., Bradley, J. and Sakimura, N. (2015). <em>RFC 7519 — JSON Web Token (JWT).</em> Internet Engineering Task Force (IETF). Available at: <a href="https://datatracker.ietf.org/doc/html/rfc7519">https://datatracker.ietf.org/doc/html/rfc7519</a>
+            </li>
+            <li class="bib-item">
+                Mozilla Developer Network (2026). <em>MDN Web Docs: Resources for developers, by developers.</em> Available at: <a href="https://developer.mozilla.org">https://developer.mozilla.org</a>
+            </li>
+            <li class="bib-item">
+                OWASP Foundation (2026). <em>OWASP Top Ten: The Ten Most Critical Web Application Security Risks.</em> Available at: <a href="https://owasp.org/www-project-top-ten">https://owasp.org/www-project-top-ten</a>
+            </li>
+        </ol>
+
+        <!-- Footer -->
+        <div class="footer">
+            Student Performance Prediction System &mdash; Bibliography &mdash; Generated April 2026
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Student Performance Prediction — Data Flow Diagrams</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f0f4ff; color: #1e293b; padding: 32px 24px; }
+
+    .cover {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #3730a3 100%);
+      color: white; border-radius: 20px; padding: 56px 48px;
+      margin-bottom: 40px; text-align: center;
+      box-shadow: 0 20px 60px rgba(30,58,138,0.4);
+    }
+    .cover h1 { font-size: 2.6rem; font-weight: 800; margin-bottom: 12px; }
+    .cover p  { font-size: 1.1rem; opacity: 0.85; margin-bottom: 20px; }
+    .cover .badge {
+      display: inline-block; margin: 5px 4px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 999px; padding: 4px 16px;
+      font-size: 0.85rem; font-weight: 600;
+    }
+    .print-btn {
+      display: block; margin: 0 auto 40px;
+      padding: 14px 40px; font-size: 1rem; font-weight: 700;
+      background: linear-gradient(135deg, #1e3a8a, #3730a3);
+      color: white; border: none; border-radius: 12px; cursor: pointer;
+      box-shadow: 0 6px 20px rgba(30,58,138,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .print-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(30,58,138,0.5); }
+
+    .section {
+      background: white; border-radius: 16px; padding: 36px;
+      margin-bottom: 32px; box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+      page-break-inside: avoid;
+    }
+    .section-header {
+      display: flex; align-items: flex-start; gap: 14px;
+      margin-bottom: 28px; padding-bottom: 16px;
+      border-bottom: 2px solid #f1f5f9;
+    }
+    .section-number {
+      min-width: 44px; height: 44px;
+      background: linear-gradient(135deg, #1e3a8a, #3730a3);
+      color: white; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 0.9rem;
+    }
+    .section-title { }
+    .section-title h2 { font-size: 1.4rem; font-weight: 700; color: #1e293b; }
+    .section-title p  { font-size: 0.88rem; color: #64748b; margin-top: 4px; }
+
+    .mermaid { overflow-x: auto; text-align: center; padding: 8px 0; }
+
+    /* Legend */
+    .legend {
+      display: flex; flex-wrap: wrap; gap: 12px;
+      margin-bottom: 24px; padding: 16px 20px;
+      background: #f8fafc; border-radius: 10px;
+      border: 1px solid #e2e8f0;
+    }
+    .legend-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.85rem; font-weight: 600; color: #475569;
+    }
+    .legend-box {
+      width: 24px; height: 24px; border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px;
+    }
+
+    /* Data store table */
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th { background: linear-gradient(135deg, #1e3a8a, #3730a3); color: white; padding: 11px 14px; text-align: left; font-weight: 600; }
+    th:first-child { border-radius: 8px 0 0 0; } th:last-child { border-radius: 0 8px 0 0; }
+    td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .flow-tag {
+      display: inline-block; padding: 2px 10px; border-radius: 6px;
+      font-size: 0.78rem; font-weight: 600; margin: 2px;
+    }
+    .in  { background: #dcfce7; color: #15803d; }
+    .out { background: #dbeafe; color: #1d4ed8; }
+    .bi  { background: #fef3c7; color: #92400e; }
+
+    @media print {
+      body { background: white; padding: 0; }
+      .print-btn { display: none !important; }
+      .cover { box-shadow: none; }
+      .section { box-shadow: none; border: 1px solid #e2e8f0; page-break-inside: avoid; }
+      @page { margin: 18mm 14mm; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Cover -->
+<div class="cover">
+  <div style="font-size:3rem;margin-bottom:12px">🔄</div>
+  <h1>Data Flow Diagrams (DFD)</h1>
+  <p>Student Performance Prediction System · Level 0 → Level 1 → Level 2</p>
+  <span class="badge">Level 0 — Context</span>
+  <span class="badge">Level 1 — Main Processes</span>
+  <span class="badge">Level 2 — Sub-Processes</span>
+  <span class="badge">Data Stores</span>
+  <span class="badge">External Entities</span>
+</div>
+
+<button class="print-btn" onclick="window.print()">🖨️ Save as PDF (Ctrl + P)</button>
+
+<!-- Legend -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">📖</div>
+    <div class="section-title">
+      <h2>DFD Legend</h2>
+      <p>Symbols and notation used in all diagrams below</p>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-box" style="background:#dbeafe;border:2px solid #3b82f6">👤</div>External Entity (User/System)</div>
+    <div class="legend-item"><div class="legend-box" style="background:#dcfce7;border:2px solid #22c55e">⚙️</div>Process (Action / Transformation)</div>
+    <div class="legend-item"><div class="legend-box" style="background:#fef3c7;border:2px solid #f59e0b">🗄️</div>Data Store (Database / Storage)</div>
+    <div class="legend-item"><div class="legend-box" style="background:#f3e8ff;border:2px solid #a855f7">➡️</div>Data Flow (Arrow with label)</div>
+  </div>
+</div>
+
+<!-- DFD Level 0 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">L0</div>
+    <div class="section-title">
+      <h2>Level 0 — Context Diagram</h2>
+      <p>Highest-level view: system as a single black box with all external entities</p>
+    </div>
+  </div>
+  <div class="mermaid">
+flowchart LR
+    AdminUser(["👑 Admin\nUser"])
+    TeacherUser(["👨‍🏫 Teacher\nUser"])
+    StudentUser(["👨‍🎓 Student\nUser"])
+    SystemBox["🎓 Student Performance\nPrediction System\n\nReact + Node.js + FastAPI\n+ MongoDB"]
+    EmailSvc(["📧 Email\nService\n(Future)"])
+
+    AdminUser -->|"Login credentials\nStudent CRUD\nSettings"| SystemBox
+    TeacherUser -->|"Login credentials\nView/Edit students\nPrediction requests"| SystemBox
+    StudentUser -->|"Login credentials\nView own data\nProfile updates"| SystemBox
+
+    SystemBox -->|"Dashboard data\nReports\nPrediction results"| AdminUser
+    SystemBox -->|"Student lists\nAnalytics\nPrediction results"| TeacherUser
+    SystemBox -->|"Own profile\nPerformance prediction\nGrade info"| StudentUser
+    SystemBox -.->|"Notifications\n(future)"| EmailSvc
+  </div>
+</div>
+
+<!-- DFD Level 1 -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">L1</div>
+    <div class="section-title">
+      <h2>Level 1 — Main Processes</h2>
+      <p>System broken into 5 major processes with all data stores and flows</p>
+    </div>
+  </div>
+  <div class="mermaid">
+flowchart TD
+    %% External Entities
+    U(["👤 User\n(Admin/Teacher/Student)"])
+    PY(["🐍 Python FastAPI\nML Service"])
+
+    %% Processes
+    P1["⚙️ P1\nAuthentication\n& Authorization"]
+    P2["⚙️ P2\nStudent\nManagement"]
+    P3["⚙️ P3\nAI Performance\nPrediction"]
+    P4["⚙️ P4\nAnalytics &\nReporting"]
+    P5["⚙️ P5\nProfile &\nSettings"]
+
+    %% Data Stores
+    DS1[("🗄️ DS1\nUser Store\nMongoDB")]
+    DS2[("🗄️ DS2\nStudent Store\nMongoDB")]
+    DS3[("🗄️ DS3\nPrediction Store\nMongoDB")]
+    DS4[("🗄️ DS4\nSession Store\nlocalStorage / JWT")]
+
+    %% Flows: User → Processes
+    U -->|"email + password + role"| P1
+    U -->|"student data"| P2
+    U -->|"profile updates"| P5
+
+    %% Flows: P1 ↔ DS
+    P1 -->|"validate credentials"| DS1
+    P1 -->|"JWT token + user object"| DS4
+    DS4 -->|"auth token"| P2
+    DS4 -->|"auth token"| P4
+    DS4 -->|"user data"| P5
+
+    %% Flows: P2 ↔ DS
+    P2 -->|"store/update\nstudent records"| DS2
+    DS2 -->|"student list\n& details"| P2
+    P2 -->|"student features\nfor prediction"| P3
+    P2 -->|"filtered student data"| P4
+
+    %% Flows: P3 ↔ External + DS
+    P3 -->|"marks, attendance,\nbranch, semester"| PY
+    PY -->|"risk score\n+ grade prediction"| P3
+    P3 -->|"prediction results"| DS3
+    DS3 -->|"stored predictions"| P4
+
+    %% Flows: Output to User
+    P1 -->|"auth success\nor error"| U
+    P2 -->|"student list\nCRUD result"| U
+    P3 -->|"prediction badge\n+ risk level"| U
+    P4 -->|"charts, reports\nanalytics"| U
+    P5 -->|"updated profile\ndisplayed"| U
+
+    %% P5 ↔ DS
+    P5 -->|"save profile\nchanges"| DS4
+    DS1 -->|"user record"| P5
+  </div>
+</div>
+
+<!-- DFD Level 2 — Authentication -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">L2</div>
+    <div class="section-title">
+      <h2>Level 2 — P1: Authentication & Authorization (Detailed)</h2>
+      <p>Breakdown of the authentication process into sub-processes</p>
+    </div>
+  </div>
+  <div class="mermaid">
+flowchart TD
+    U(["👤 User"])
+    GOOGLE(["🌐 Google OAuth\n(Future)"])
+
+    P1_1["⚙️ P1.1\nValidate\nInput Fields"]
+    P1_2["⚙️ P1.2\nCheck User\nin Database"]
+    P1_3["⚙️ P1.3\nVerify\nPassword Hash\n(bcryptjs)"]
+    P1_4["⚙️ P1.4\nGenerate\nJWT Token\n(7-day expiry)"]
+    P1_5["⚙️ P1.5\nRole-Based\nRoute Guard\n(ProtectedRoute)"]
+    P1_6["⚙️ P1.6\nRegister\nNew User"]
+
+    DS1[("🗄️ DS1\nUser Collection\nMongoDB")]
+    DS4[("🗄️ DS4\nlocalStorage\nJWT + user object")]
+
+    U -->|"email, password, role"| P1_1
+    P1_1 -->|"invalid fields"| U
+    P1_1 -->|"valid login data"| P1_2
+    P1_1 -->|"valid signup data"| P1_6
+    P1_6 -->|"hash password\nsave user"| DS1
+    DS1 -->|"user not found"| U
+    P1_2 -->|"user record"| P1_3
+    P1_3 -->|"password mismatch"| U
+    P1_3 -->|"auth success"| P1_4
+    P1_4 -->|"JWT + full user object"| DS4
+    DS4 -->|"token on each request\n(Axios interceptor)"| P1_5
+    P1_5 -->|"unauthorized → 401"| U
+    P1_5 -->|"role mismatch → /unauthorized"| U
+    P1_5 -->|"access granted"| U
+    GOOGLE -.->|"OAuth token\n(future)"| P1_4
+  </div>
+</div>
+
+<!-- DFD Level 2 — Student Management -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">L2</div>
+    <div class="section-title">
+      <h2>Level 2 — P2: Student Management (Detailed)</h2>
+      <p>Breakdown of CRUD operations for student records</p>
+    </div>
+  </div>
+  <div class="mermaid">
+flowchart TD
+    U(["👤 Admin / Teacher"])
+
+    P2_1["⚙️ P2.1\nFetch Student\nList with Filters"]
+    P2_2["⚙️ P2.2\nValidate Student\nForm Data"]
+    P2_3["⚙️ P2.3\nCreate New\nStudent Record"]
+    P2_4["⚙️ P2.4\nUpdate Existing\nStudent Record"]
+    P2_5["⚙️ P2.5\nDelete Student\nRecord"]
+    P2_6["⚙️ P2.6\nPagination &\nSearch Filter"]
+    P2_7["⚙️ P2.7\nTrigger AI\nPrediction"]
+
+    DS2[("🗄️ DS2\nStudent Collection\nMongoDB")]
+    DS3[("🗄️ DS3\nPrediction Store\nMongoDB")]
+    PY(["🐍 FastAPI\nML Service"])
+
+    U -->|"GET /api/students\n+ filters"| P2_1
+    P2_1 -->|"query params"| P2_6
+    P2_6 -->|"paginated query"| DS2
+    DS2 -->|"student records"| P2_1
+    P2_1 -->|"student list + pagination"| U
+
+    U -->|"student form data\n(POST/PUT)"| P2_2
+    P2_2 -->|"invalid data"| U
+    P2_2 -->|"valid new student"| P2_3
+    P2_2 -->|"valid update"| P2_4
+
+    P2_3 -->|"INSERT student"| DS2
+    DS2 -->|"new student id"| P2_3
+    P2_3 -->|"student features"| P2_7
+    P2_7 -->|"payload"| PY
+    PY -->|"prediction result"| P2_7
+    P2_7 -->|"risk score + grade"| DS3
+    P2_3 -->|"success response"| U
+
+    P2_4 -->|"UPDATE student"| DS2
+    P2_4 -->|"updated features"| P2_7
+    P2_4 -->|"success response"| U
+
+    U -->|"DELETE /api/students/:id"| P2_5
+    P2_5 -->|"confirm delete"| DS2
+    P2_5 -->|"delete prediction"| DS3
+    P2_5 -->|"success response"| U
+  </div>
+</div>
+
+<!-- DFD Level 2 — AI Prediction -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">L2</div>
+    <div class="section-title">
+      <h2>Level 2 — P3: AI Performance Prediction (Detailed)</h2>
+      <p>Data flow through the machine learning prediction pipeline</p>
+    </div>
+  </div>
+  <div class="mermaid">
+flowchart TD
+    NODE(["🟩 Node.js\nBackend"])
+    REACT(["⚛️ React\nFrontend"])
+
+    P3_1["⚙️ P3.1\nReceive &\nValidate Payload\n(predict_schemas.py)"]
+    P3_2["⚙️ P3.2\nFeature\nExtraction &\nPreprocessing"]
+    P3_3["⚙️ P3.3\nML Model\nInference"]
+    P3_4["⚙️ P3.4\nScore\nClassification"]
+    P3_5["⚙️ P3.5\nGenerate\nRecommendations"]
+    P3_6["⚙️ P3.6\nFormat &\nReturn Result"]
+
+    DS3[("🗄️ DS3\nPrediction Store\nMongoDB")]
+    DS_MODEL[("🗄️ ML Model\nWeights / Logic\nPython")]
+
+    NODE -->|"name, branch, semester\nmarks, attendance"| P3_1
+    P3_1 -->|"422 Validation Error"| NODE
+    P3_1 -->|"valid input data"| P3_2
+
+    P3_2 -->|"normalized features\nvector"| P3_3
+    DS_MODEL -->|"model weights\n& logic"| P3_3
+
+    P3_3 -->|"raw prediction score\n0–100"| P3_4
+
+    P3_4 -->|"score below 40"| P3_5
+    P3_4 -->|"score 40–70"| P3_5
+    P3_4 -->|"score above 70"| P3_5
+
+    P3_5 -->|"risk level label +\nrecommendation list"| P3_6
+    P3_6 -->|"JSON response\n riskLevel, score,\nrecommendations "| NODE
+
+    NODE -->|"store prediction"| DS3
+    DS3 -->|"previous prediction"| P3_6
+    NODE -->|"prediction result"| REACT
+    REACT -->|"show badge, chart,\nrisk indicator"| REACT
+  </div>
+</div>
+
+<!-- DFD Level 2 — Profile & Settings -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">L2</div>
+    <div class="section-title">
+      <h2>Level 2 — P5: Profile & Settings Management (Detailed)</h2>
+      <p>Data flow for user profile editing and settings persistence</p>
+    </div>
+  </div>
+  <div class="mermaid">
+flowchart TD
+    U(["👤 User\n(Any Role)"])
+
+    P5_1["⚙️ P5.1\nLoad User Data\n(AuthContext / localStorage)"]
+    P5_2["⚙️ P5.2\nPopulate\nEdit Form Fields"]
+    P5_3["⚙️ P5.3\nValidate\nChanged Fields"]
+    P5_4["⚙️ P5.4\nAuthContext\nupdateUser()"]
+    P5_5["⚙️ P5.5\nSync to\nlocalStorage"]
+    P5_6["⚙️ P5.6\nUpdate React\nState (setUser)"]
+    P5_7["⚙️ P5.7\nLoad User\nSettings Prefs"]
+    P5_8["⚙️ P5.8\nSave Settings\n(theme, notifs, etc)"]
+
+    DS4[("🗄️ DS4\nlocalStorage\nuser + token")]
+    DS5[("🗄️ DS5\nlocalStorage\napp settings")]
+
+    U -->|"navigate to /edit-profile"| P5_1
+    DS4 -->|"stored user object"| P5_1
+    P5_1 -->|"user fields"| P5_2
+    P5_2 -->|"populated form\n(name, phone, address, bio)"| U
+
+    U -->|"edit and submit form"| P5_3
+    P5_3 -->|"validation errors"| U
+    P5_3 -->|"valid updated fields"| P5_4
+    P5_4 -->|"write new user state"| P5_6
+    P5_4 -->|"updated user object"| P5_5
+    P5_5 -->|"persist user JSON"| DS4
+    P5_6 -->|"re-render Navbar,\nProfile, Header"| U
+
+    U -->|"navigate to /settings"| P5_7
+    DS5 -->|"saved preferences"| P5_7
+    P5_7 -->|"settings UI\n(theme, security, notifs)"| U
+    U -->|"change settings"| P5_8
+    P5_8 -->|"new prefs"| DS5
+    P5_8 -->|"apply theme / changes"| U
+  </div>
+</div>
+
+<!-- Data Stores Summary -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">DS</div>
+    <div class="section-title">
+      <h2>All Data Stores — Summary</h2>
+      <p>Complete reference of every data store used in the system with their flows</p>
+    </div>
+  </div>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Data Store</th><th>Technology</th><th>Data Stored</th><th>Flows</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>DS1</strong></td>
+        <td>🗄️ User Collection</td>
+        <td>MongoDB</td>
+        <td>email, password (hashed), role, timestamps</td>
+        <td><span class="flow-tag in">← Register</span><span class="flow-tag out">→ Login verify</span></td>
+      </tr>
+      <tr>
+        <td><strong>DS2</strong></td>
+        <td>🗄️ Student Collection</td>
+        <td>MongoDB</td>
+        <td>name, branch, semester, marks, attendance, status, riskScore, prediction</td>
+        <td><span class="flow-tag bi">↔ Full CRUD</span><span class="flow-tag out">→ Prediction trigger</span></td>
+      </tr>
+      <tr>
+        <td><strong>DS3</strong></td>
+        <td>🗄️ Prediction Store</td>
+        <td>MongoDB</td>
+        <td>studentId, score, riskLevel, recommendations, generatedAt</td>
+        <td><span class="flow-tag in">← ML result stored</span><span class="flow-tag out">→ Analytics read</span></td>
+      </tr>
+      <tr>
+        <td><strong>DS4</strong></td>
+        <td>🗄️ Session Store</td>
+        <td>localStorage + JWT</td>
+        <td>JWT token (7d), user object (role, email, name, phone, address, bio)</td>
+        <td><span class="flow-tag in">← Login / updateUser</span><span class="flow-tag out">→ Axios requests, Profile pages</span></td>
+      </tr>
+      <tr>
+        <td><strong>DS5</strong></td>
+        <td>🗄️ App Settings</td>
+        <td>localStorage</td>
+        <td>theme prefs, notification prefs, security settings, loginAttempts</td>
+        <td><span class="flow-tag bi">↔ Settings page R/W</span></td>
+      </tr>
+      <tr>
+        <td><strong>DS6</strong></td>
+        <td>🗄️ ML Model Store</td>
+        <td>Python / File</td>
+        <td>Model weights, feature scalers, prediction logic</td>
+        <td><span class="flow-tag out">→ ML inference engine</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Complete System Data Flow -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-number">E2E</div>
+    <div class="section-title">
+      <h2>End-to-End Data Flow — Full System</h2>
+      <p>Complete data journey from user input to AI prediction result shown on screen</p>
+    </div>
+  </div>
+  <div class="mermaid">
+flowchart LR
+    A(["👤 User\nBrowser"])
+
+    subgraph REACT["⚛️ React Frontend"]
+        B["Login Form"]
+        C["AuthContext\nJWT stored"]
+        D["Students Form"]
+        E["Prediction\nBadge UI"]
+    end
+
+    subgraph NODE["🟩 Node.js · Port 5000"]
+        F["POST /api/auth/login"]
+        G["JWT Middleware"]
+        H["POST /api/students"]
+        I["GET /api/students"]
+    end
+
+    subgraph PYTHON["🐍 FastAPI · Port 8000"]
+        J["POST /api/predict"]
+        K["ML Model"]
+    end
+
+    subgraph MONGO["🍃 MongoDB"]
+        L[("Users")]
+        M[("Students")]
+        N[("Predictions")]
+    end
+
+    A -->|"email + password"| B
+    B -->|"POST login"| F
+    F -->|"verify"| L
+    L -->|"user record"| F
+    F -->|"JWT + user data"| C
+    C -->|"token in header"| G
+    A -->|"student info"| D
+    D -->|"Axios + JWT"| G
+    G -->|"authorized"| H
+    H -->|"save"| M
+    H -->|"student features"| J
+    J -->|"run model"| K
+    K -->|"score + risk"| J
+    J -->|"result"| I
+    I -->|"store prediction"| N
+    I -->|"data + prediction"| E
+    E -->|"visual output"| A
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    theme: 'base',
+    themeVariables: {
+      primaryColor: '#dbeafe',
+      primaryTextColor: '#1e293b',
+      primaryBorderColor: '#3b82f6',
+      lineColor: '#64748b',
+      secondaryColor: '#dcfce7',
+      tertiaryColor: '#fef3c7',
+      fontFamily: 'Inter, sans-serif',
+      fontSize: '13px'
+    },
+    flowchart: { curve: 'basis', padding: 20 },
+  });
+</script>
+</body>
+</html>
